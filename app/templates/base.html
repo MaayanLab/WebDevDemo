@@ -1,0 +1,27 @@
+
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo">OntoSearch</a>
+                    <ul id="nav-mobile" class="right">
+                        <li><a href="{{url_for('index')}}">Home</a></li>
+                        <li><a href="{{url_for('about')}}">About</a></li>
+                        <li><a href="{{url_for('hello_world')}}">Hello World</a></li>
+                        <li><a href="{{url_for('gene_query')}}">Gene Query</a></li>
+                        <li><a href="{{url_for('gene_query'), gene='STAT3'}}">STAT3</a></li>
+                    </ul>
+                </div>
+            </nav>            
+        </header>
+        <body>
+            <div>
+                {% block content %}{% endblock %}
+            </div>
+        </body>
+    </body>
+</html>
