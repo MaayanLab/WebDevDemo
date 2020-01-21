@@ -9,6 +9,8 @@ class Geneset(db.Model):
         return '<Geneset %r>' % self.geneset
     
     def __init__(self, geneset):
+        # generate uuid
         self.uuid = str(uuid4())
+        # split the gene set based on white space, sort it, and merge it
         geneset = "\n".join(sorted(geneset.split()))
         self.geneset = geneset
