@@ -1,28 +1,26 @@
-# Use alpine as the base of our image
-FROM alpine:3.10
-# Add needed libraries
-RUN apk add --update \
-    sqlite\
-    python \
-    py-pip
-# Set work directory
-WORKDIR /app
-#copy application
-ADD . /app
+FROM debian:stable
 
-# Install requirements.txt
-RUN pip install -r app/Requirements.txt
+RUN set -x \
+  && echo "Preparing user..." \
+  && useradd -ms /bin/bash -d /app app
 
-# Setup environment variables
-ENV FLASK_APP=app
-ENV FLASK_ENV=production
+ADD deps.txt /app/deps.txt
+RUN set -x \
+  && echo "Installing system dependencies from deps.txt..." \
+  && apt-get -y update \
+  && apt-get -y install $(grep -v '^#' /app/deps.txt) \
+  && rm /app/deps.txt
 
-# Expose ports
-EXPOSE 5000
+ADD requirements.txt /app/requirements.txt
+RUN set -x \
+  && echo "Installing python dependencies from requirements.txt..." \
+  && pip3 install -Ivr /app/requirements.txt \
+  && rm /app/requirements.txt
 
-# Initialize db
-RUN python initialize_db.py
-RUN python fill_db.py
+EXPOSE 80
+ADD boot.sh /app/boot.sh
+RUN set -x && chmod +x /app/boot.sh
+CMD /app/boot.sh
 
-# This is what will run when we do docker run
-CMD flask run --host=0.0.0.0
+ADD app /app/app
+RUN set -x && chown app:app -R /app/

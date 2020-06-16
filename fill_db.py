@@ -1,23 +1,26 @@
-from app.models import db, Geneset
-try:
-    gs = Geneset("STAT3 STAT1")
-    db.session.add(gs)
-    db.session.commit()
-except Exception as e:
-    print ("Error inserting gs")
-    #Rollback if there are errors
-    db.session.rollback()
+import pandas as pd
+from app.model import db, Tissue, Synonym
 
-# Will produce an error, why?
-try:
-    gs = Geneset("STAT1 STAT3")
-    db.session.add(gs)
-    db.session.commit()
-except Exception as e:
-    print ("Error inserting gs1")
-    #Rollback if there are errors
-    db.session.rollback()
+df = pd.read_csv("data/UBERON.csv")
+df = df[df.Obsolete == False]
+df.Definitions[df.Definitions.isna()] = ''
+df.Synonyms[df.Synonyms.isna()] = ''
 
-# View db contents
-genesets = Geneset.query.all()
-print(genesets)
+for i in df.index:
+    entry = df.loc[i]
+    class_id = entry["Class ID"]
+    label = entry["Preferred Label"]
+    synonyms = entry["Synonyms"].split("|")
+    definitions = entry["Definitions"]
+    try:
+        tissue = Tissue(class_id, label, definitions)
+        db.session.add(tissue)
+        for syn in synonyms:
+            synonym = Synonym(tissue.uuid, syn)
+            db.session.add(synonym)
+        db.session.commit()
+    except Exception as e:
+        print ("Error inserting tissue")
+        print(e)
+        #Rollback if there are errors
+        db.session.rollback()
