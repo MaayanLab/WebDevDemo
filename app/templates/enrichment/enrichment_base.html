@@ -2,22 +2,25 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='index.css') }}"
+		/>
     </head>
     <body>
         <header>
             <nav>
                 <div class="nav-wrapper">
-                    <a href="{{url_for('home')}}" class="brand-logo">My WebApp</a>
-                    <ul id="nav-mobile" class="right">
-                        <li><a href="{{url_for('home')}}">Home</a></li>
-                        <li><a href="{{url_for('hello')}}">Hello</a></li>
-                    </ul>
+                    <a href="{{url_for('landing_page')}}" class="brand-logo">COVID-19 Enrichment</a>
                 </div>
             </nav>            
         </header>
-        <div>
-            {% block content %}{% endblock %}
-        </div>
+		<main>
+			<div class="container">
+				<!-- Page Content goes here -->
+				{% block content %}{% endblock %}
+			</div>
+		</main>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </body>
 </html>

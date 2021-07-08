@@ -1,0 +1,55 @@
+
+{% extends "enrichment/enrichment_base.html" %}
+{% block title %} COVID-19 Enrichment {% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col s8 offset-s2">
+		<div id="signature-input" class="input-field">
+				<input type="text" name="autocomplete" id="autocomplete-input" class="autocomplete" placeholder="Enter a signature">
+		</div>
+		<div>
+			<form name="library-radio">
+				<label>
+					<input class="with-gap" name="library" type="radio" value="GO_Biological_Process_2021" checked/>
+					<span>GO_Biological_Process_2021</span>
+				</label>
+				<label>
+					<input class="with-gap" name="library" type="radio" value="KEGG_2021_Human" />
+					<span>KEGG_2021_Human</span>
+				</label>
+			</form>
+		</div>
+		<div id="my-plot"></div>
+	</div>
+</div>
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="{{ url_for('static', filename='js/helper.js') }}"></script>
+<script>
+	radio_listener()
+	document.addEventListener('DOMContentLoaded', function() {
+		fetch("{{url_for('get_signatures')}}")
+		.then(response => response.json())
+		.then(data => {
+			var elems = document.querySelectorAll('.autocomplete');
+			var onAutocomplete = function(val) {
+				document.getElementById("autocomplete-input").value = val; 
+				update_data()
+			}
+			var options = {
+				limit: 10,
+				onAutocomplete,
+				data: data.reduce((acc,d)=>({
+					...acc,
+					[d]: null,
+				}),{})
+			}
+			// console.log(document.querySelector('input[name="library"]:checked').value)
+			var instances = M.Autocomplete.init(elems, options);
+		})
+	});
+</script>
+<script>
+	
+</script>
+{% endblock %}

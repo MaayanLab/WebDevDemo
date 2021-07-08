@@ -2,3 +2,18 @@ body {
   font-size: 12pt;
   background-color: 'light-grey';
 }
+main {
+  margin-top: 50px;
+}
+#signature-input {
+  background: #f7f7f7;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+#autocomplete-input {
+  border-bottom: none;
+}
+
+nav {
+  padding-left: 10px;
+}

@@ -24,3 +24,11 @@ CMD /app/boot.sh
 
 ADD app /app/app
 RUN set -x && chown app:app -R /app/
+
+ADD init_db.py /app/init_db.py
+ADD fill_db.py /app/fill_db.py
+ADD data/enriched_terms.tsv /app/data/enriched_terms.tsv
+
+
+RUN python3 /app/init_db.py
+RUN python3 /app/fill_db.py /app/data/enriched_terms.tsv

@@ -1,10 +1,10 @@
-# webdev-summer-demo
+# WebDevDemo
 
-web dev demo
+Web Dev Demo
 
 ## Development
 
-The entrypoint of the application is in `webdev_summer_demo/app/app.py`; do not change the name of the file or directory.
+The entrypoint of the application is in `webdevdemo/app/app.py`; do not change the name of the file or directory.
 
 ### Getting Started
 ```bash
@@ -19,7 +19,7 @@ source venv/bin/activate
 python run.py
 ```
 
-And visit <http://localhost:8080/webdev_summer_demo>.
+And visit <http://localhost:8080/webdevdemo>.
 
 ### Installing new dependencies
 
