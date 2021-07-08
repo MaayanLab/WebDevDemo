@@ -88,11 +88,8 @@ def get_enrichment(name=None):
   elif flask.request.method=='POST':
     library=flask.request.form.get('library')
     signature=flask.request.form.get('signature')
-  if signature == None:
+  if signature == None or library == None:
     return flask.abort(400)
-  if library == None:
-    library = "GO_Biological_Process_2021"
-  print(library)
   query = Enrichment.query
   query = query.filter(Enrichment.signature_name == signature)
   
